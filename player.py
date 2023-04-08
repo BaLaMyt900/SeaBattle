@@ -12,33 +12,33 @@ class Player:
                       Ship(1, self.field)]
 
     def set_ships(self):
-        self.field.set_field([['■', '■', '■', 'О', 'О', 'О'], ['О', 'О', 'О', 'О', '■', 'О'], ['■', 'О', '■', 'О', '■', 'О'],
-                        ['О', 'О', 'О', 'О', 'О', 'О'], ['О', 'О', 'О', '■', 'О', '■'], ['■', '■', 'О', 'О', 'О', 'О']])
-        # for ship in self.Ships:
-        #     while True:
-        #         self.field.draw_field()
-        #         pos = input(f'Введите координаты для {f"{ship.get_size}х" if ship.get_size > 1 else f"{ship.get_size}но"} палубного корабля. Y X через пробел: ')
-        #         try:
-        #             pos = (int(pos[0]), int(pos[2]))
-        #         except:
-        #             print('Неверный ввод. Повторите снова')
-        #             continue
-        #         if not 0 <= pos[0] <= 5 or not 0 <= pos[1] <= 5:
-        #             print('Выход за координаты. Повторите попытку')
-        #             continue
-        #         if ship.get_size > 1:
-        #             orientation = input('Установить вертикально? Введите Y')
-        #             ship.orientation = True if any([orientation == 'Y', orientation == 'y',
-        #                                             orientation == 'н', orientation == 'Н']) else False
-        #         try:
-        #             ship.position = pos
-        #         except CollisionError:
-        #             print('Ошибка. Слишком близко к другому кораблю.')
-        #             continue
-        #         except IndexError:
-        #             print('Ошибка. Корабль установлен за пределами карты.')
-        #             continue
-        #         break
+        # self.field.set_field([['■', '■', '■', 'О', 'О', 'О'], ['О', 'О', 'О', 'О', '■', 'О'], ['■', 'О', '■', 'О', '■', 'О'],
+        #                 ['О', 'О', 'О', 'О', 'О', 'О'], ['О', 'О', 'О', '■', 'О', '■'], ['■', '■', 'О', 'О', 'О', 'О']])
+        for ship in self.Ships:
+            while True:
+                self.field.draw_field()
+                pos = input(f'Введите координаты для {f"{ship.get_size}х" if ship.get_size > 1 else f"{ship.get_size}но"} палубного корабля. Y X через пробел: ')
+                try:
+                    pos = (int(pos[0]), int(pos[2]))
+                except:
+                    print('Неверный ввод. Повторите снова')
+                    continue
+                if not 0 <= pos[0] <= 5 or not 0 <= pos[1] <= 5:
+                    print('Выход за координаты. Повторите попытку')
+                    continue
+                if ship.get_size > 1:
+                    orientation = input('Установить вертикально? Введите Y')
+                    ship.orientation = True if any([orientation == 'Y', orientation == 'y',
+                                                    orientation == 'н', orientation == 'Н']) else False
+                try:
+                    ship.position = pos
+                except CollisionError:
+                    print('Ошибка. Слишком близко к другому кораблю.')
+                    continue
+                except IndexError:
+                    print('Ошибка. Корабль установлен за пределами карты.')
+                    continue
+                break
 
     def draw_both_field(self):
         print(f"  {' '.join(f'| {i} |' for i in range(6))}\t  {' '.join(f'| {i} |' for i in range(6))}")

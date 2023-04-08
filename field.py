@@ -4,36 +4,23 @@ class Field:
     def __init__(self):
         self.field = [['О' for i in range(6)] for d in range(6)]
 
-
-    def field(self):
-        return self.field
-
     def set_field(self, var: list):
         self.field = var
 
+
     """Принимает лист с кортежами и пытается записать в поле. Иначе ошибка"""
-    def set_ship(self, dot: list):
-        for d in dot:
-            """Проверка нахождения в пределах индексов"""
-            if not 0 <= d[0] <= 5 or not 0 <= d[1] <= 5:
+    def set_ship(self, dots: list):
+        for y, x in dots:
+            if not 0 <= y <= 5 and not 0 <= x <= 5:
                 raise IndexError
-            """Поле 3х3 вокруг точки"""
-            check = [(x, y) for x in range(d[0]-1, d[0]+2) for y in range(d[1]-1, d[1]+2)]
-            for ch in check:
-                """Оборачиваем в try ибо может быть за пределами поля"""
-                try:
-                    if d[0] > 0 and d[1] > 0:
-                        if self.field[ch[0]][ch[1]] != 'О':
-                            raise CollisionError
-                except CollisionError:
-                    raise CollisionError
-                except IndexError:
-                    pass
-        for d in dot:
-            try:
-                self.field[d[0]][d[1]] = '■'
-            except IndexError:
-                raise IndexError
+            check = [(y_, x_) for x_ in range(x - 1, x + 2) for y_ in range(y - 1, y + 2)]
+            for y_, x_ in check:
+                if 5 >= y_ >= 0 and 5 >= x_ >= 0:
+                    if self.field[y_][x_] == '■':
+                        raise CollisionError
+        for y, x in dots:
+            self.field[y][x] = '■'
+
 
     """Отрисовка поля"""
     def draw_field(self):

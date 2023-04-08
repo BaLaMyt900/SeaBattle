@@ -1,8 +1,8 @@
 from random import randint
-from random import random
 from player import Player
 from field import Field
 from my_errors import CollisionError
+
 
 class Enemy(Player):
     def __init__(self):
@@ -10,30 +10,31 @@ class Enemy(Player):
         self.shots = []
 
     def set_ships(self):
-        """Подготовленные поля противника"""
-        list_fields = [[['■', '■', '■', 'О', 'О', 'О'], ['О', 'О', 'О', 'О', '■', 'О'], ['■', 'О', '■', 'О', '■', 'О'],
-                        ['О', 'О', 'О', 'О', 'О', 'О'], ['О', 'О', 'О', '■', 'О', '■'], ['■', '■', 'О', 'О', 'О', 'О']],
-                       [['■', '■', 'О', 'О', '■', 'О'], ['О', 'О', 'О', 'О', 'О', 'О'], ['О', '■', 'О', '■', 'О', 'О'],
-                        ['■', 'О', 'О', 'О', 'О', '■'], ['■', 'О', '■', 'О', 'О', '■'], ['О', 'О', 'О', 'О', 'О', '■']],
-                       [['■', 'О', '■', '■', 'О', '■'], ['■', 'О', 'О', 'О', 'О', 'О'], ['■', 'О', 'О', 'О', '■', 'О'],
-                        ['О', 'О', '■', 'О', 'О', 'О'], ['О', 'О', '■', 'О', '■', 'О'], ['■', 'О', 'О', 'О', 'О', 'О']],
-                       [['О', 'О', 'О', '■', 'О', '■'], ['О', '■', 'О', 'О', 'О', 'О'], ['О', '■', 'О', '■', 'О', '■'],
-                        ['О', 'О', 'О', 'О', 'О', '■'], ['О', 'О', 'О', 'О', 'О', '■'], ['■', 'О', '■', '■', 'О', 'О']]
-                       ]
-        # self.field.set_field(list_fields[0])
+        test_field = Field().field
+        while True:
+            self.field.field = test_field
+            for ship in self.Ships:
+                tries = 0
+                while tries < 10:
+                    pos = (randint(0, 5), randint(0, 5))
+                    if ship.get_size > 1:
+                        ship.orientation = True if randint(0, 1) == 1 else False
+                    try:
+                        ship.position = pos
+                    except CollisionError:
+                        tries += 1
+                        continue
+                    except IndexError:
+                        tries += 1
+                        continue
+                    break
 
-        for ship in self.Ships:
-            while True:
-                pos = (randint(0, 5), randint(0, 5))
-                if ship.get_size > 1:
-                    ship.orientation = True if random() == 1 else False
-                try:
-                    ship.position = pos
-                except CollisionError:
-                    continue
-                except IndexError:
-                    continue
+            if self.field.field != test_field:
                 break
+            else:
+                self.field.draw_field()
+
+
     def shot(self, enemy_field: Field):
         while True:
             shot = (randint(0, 5), randint(0, 5))
