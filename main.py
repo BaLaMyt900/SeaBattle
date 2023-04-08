@@ -27,6 +27,10 @@ class Field:
                     raise CollisionError
                 except IndexError:
                     pass
+            try:
+                self.field[d[0]][d[1]] = 'О'
+            except:
+                raise IndexError
         for d in dot:
             try:
                 self.field[d[0]][d[1]] = '■'
@@ -73,6 +77,8 @@ class Ship:
                 self.field.set_shit(position)
             except CollisionError:
                 raise CollisionError
+            except IndexError:
+                raise IndexError
             else:
                 self._position = position
 
@@ -126,7 +132,10 @@ class Player:
                 try:
                     ship.position = pos
                 except CollisionError:
-                    print('Ошибка. Недопустимые координаты.')
+                    print('Ошибка. Слишком близко к другому кораблю.')
+                    continue
+                except IndexError:
+                    print('Ошибка. Корабль установлен за пределами карты.')
                     continue
                 break
 
@@ -145,11 +154,11 @@ class Player:
                 break
 
 def init():
-    # player = Player()
-    # player.set_ships()
-    Enemy = Player()
-    print('Генерация поля противника...')
-    Enemy.set_enemy_ships()
+    player = Player()
+    player.set_ships()
+    # Enemy = Player()
+    print(player.field.field)
+    # Enemy.set_enemy_ships()
 
 def main():
     init()
