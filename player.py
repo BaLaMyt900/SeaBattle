@@ -2,6 +2,7 @@ from field import Field
 from ship import Ship
 from my_errors import CollisionError
 
+
 class Player:
     def __init__(self):
         self.field = Field()
@@ -11,22 +12,21 @@ class Player:
                       Ship(1, self.field), Ship(1, self.field),
                       Ship(1, self.field)]
 
-    def set_ships(self):
-        # self.field.set_field([['■', '■', '■', 'О', 'О', 'О'], ['О', 'О', 'О', 'О', '■', 'О'], ['■', 'О', '■', 'О', '■', 'О'],
-        #                 ['О', 'О', 'О', 'О', 'О', 'О'], ['О', 'О', 'О', '■', 'О', '■'], ['■', '■', 'О', 'О', 'О', 'О']])
+    def set_ships(self):  # Установка кораблей с проверкой ввода и обработка ошибок
         for ship in self.Ships:
             while True:
                 self.field.draw_field()
-                pos = input(f'Введите координаты для {f"{ship.get_size}х" if ship.get_size > 1 else f"{ship.get_size}но"} палубного корабля. Y X через пробел: ')
+                pos = input(f'Введите координаты для {f"{ship.size}х" if ship.size > 1 else f"{ship.size}но"}'
+                            f' палубного корабля. Y X через пробел: ')
                 try:
                     pos = (int(pos[0]), int(pos[2]))
-                except:
+                except ValueError:
                     print('Неверный ввод. Повторите снова')
                     continue
                 if not 0 <= pos[0] <= 5 or not 0 <= pos[1] <= 5:
                     print('Выход за координаты. Повторите попытку')
                     continue
-                if ship.get_size > 1:
+                if ship.size > 1:
                     orientation = input('Установить вертикально? Введите Y')
                     ship.orientation = True if any([orientation == 'Y', orientation == 'y',
                                                     orientation == 'н', orientation == 'Н']) else False
@@ -40,17 +40,17 @@ class Player:
                     continue
                 break
 
-    def draw_both_field(self):
+    def draw_both_field(self):  # Отрисовка своего поля и поля для стрельбы через табуляцию
         print(f"  {' '.join(f'| {i} |' for i in range(6))}\t  {' '.join(f'| {i} |' for i in range(6))}")
         for i, st in enumerate(zip(self.field.field, self.field_for_shot.field)):
             print(f'{i} {" ".join(f"| {s} |" for s in st[0])}\t{i} {" ".join(f"| {s} |" for s in st[1])}')
 
-    def shot(self, enemy_field: Field):
+    def shot(self, enemy_field: Field):  # Функция стрельбы пользователя.
         while True:
             shot = input('Введите координаты: ')
             try:
                 shot = (int(shot[0]), int(shot[2]))
-            except:
+            except ValueError:
                 print('Неверный ввод. Необходимо ввести Y X от 0 до 5 через пробел.')
                 continue
             if not 0 <= shot[0] <= 5 or not 0 <= shot[1] <= 5:
@@ -67,9 +67,12 @@ class Player:
                     self.field_for_shot.field[shot[0]][shot[1]] = 'T'
                     return False
 
-    def check_down_ship(self):
+    def check_down_ship(self):  # Проверка потопленных кораблей. Возвращает Истину если нашелся хоть один и удаляет его
         for ship in self.Ships:
             if ship.check_down():
                 self.Ships.remove(ship)
                 return True
         return False
+
+    def check_defeat(self):  # Проверка поражения. Если список кораблей пуст, возвращает Истину
+        return len(self.Ships) == 0

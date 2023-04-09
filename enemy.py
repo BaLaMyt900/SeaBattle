@@ -1,41 +1,50 @@
 from random import randint
 from player import Player
 from field import Field
-from my_errors import CollisionError
 
 
-class Enemy(Player):
+class Enemy(Player):  # Пермутация от Player с перепесью функций
     def __init__(self):
         super().__init__()
         self.shots = []
 
-    def set_ships(self):
-        test_field = Field().field
-        while True:
-            self.field.field = test_field
-            for ship in self.Ships:
-                tries = 0
-                while tries < 10:
-                    pos = (randint(0, 5), randint(0, 5))
-                    if ship.get_size > 1:
-                        ship.orientation = True if randint(0, 1) == 1 else False
-                    try:
-                        ship.position = pos
-                    except CollisionError:
-                        tries += 1
-                        continue
-                    except IndexError:
-                        tries += 1
-                        continue
-                    break
+    def set_ships(self):  # Выбор 1го из 4ех подготовленных полей
+        choise = 2
+        if choise == 0:
+            self.Ships[0].orientation, self.Ships[0].position = True, (4, 0)
+            self.Ships[1].orientation, self.Ships[1].position = False, (0, 4)
+            self.Ships[2].orientation, self.Ships[2].position = False, (5, 3)
+            self.Ships[3].position = (0, 0)
+            self.Ships[4].position = (2, 2)
+            self.Ships[5].position = (2, 5)
+            self.Ships[6].position = (5, 5)
+        elif choise == 1:
+            self.Ships[0].orientation, self.Ships[0].position = False, (0, 2)
+            self.Ships[1].orientation, self.Ships[1].position = True, (3, 0)
+            self.Ships[2].orientation, self.Ships[2].position = True, (1, 5)
+            self.Ships[3].position = (2, 2)
+            self.Ships[4].position = (5, 1)
+            self.Ships[5].position = (4, 3)
+            self.Ships[6].position = (4, 5)
+        elif choise == 2:
+            self.Ships[0].orientation, self.Ships[0].position = True, (2, 5)
+            self.Ships[1].orientation, self.Ships[1].position = True, (2, 0)
+            self.Ships[2].orientation, self.Ships[2].position = False, (5, 1)
+            self.Ships[3].position = (0, 2)
+            self.Ships[4].position = (2, 2)
+            self.Ships[5].position = (4, 3)
+            self.Ships[6].position = (5, 5)
+        elif choise == 3:
+            self.Ships[0].orientation, self.Ships[0].position = True, (2, 5)
+            self.Ships[1].orientation, self.Ships[1].position = False, (0, 2)
+            self.Ships[2].orientation, self.Ships[2].position = False, (5, 1)
+            self.Ships[3].position = (2, 0)
+            self.Ships[4].position = (2, 2)
+            self.Ships[5].position = (5, 3)
+            self.Ships[6].position = (5, 5)
+        pass
 
-            if self.field.field != test_field:
-                break
-            else:
-                self.field.draw_field()
-
-
-    def shot(self, enemy_field: Field):
+    def shot(self, enemy_field: Field):  # Перепись функции выстрела.
         while True:
             shot = (randint(0, 5), randint(0, 5))
             if shot not in self.shots:
