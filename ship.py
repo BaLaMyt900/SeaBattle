@@ -17,7 +17,7 @@ class Ship:
     @orientation.setter  # Установка ориентации
     def orientation(self, orientation: bool):
         if self.size == 1:
-            raise ValueError("Нет необходимости ставить ориентацию")
+            self._orientation = False
         else:
             self._orientation = orientation
 
