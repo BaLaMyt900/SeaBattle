@@ -27,10 +27,11 @@ class Enemy(Player):  # Пермутация от Player с перепесью �
                         continue
                     else:
                         break
-            if self.field.field != [['О' for _ in range(6)] for _ in range(6)]:
+            check = all([True if ship.position else False for ship in self.Ships])
+            if self.field.field != [['О' for _ in range(6)] for _ in range(6)] and check:
                 break
 
-    def shot(self, enemy_field: Field):  # Перепись функции выстрела.
+    def shot(self, enemy_field: Field):  # Функция выстрела компьютера
         while True:
             shot = (randint(0, 5), randint(0, 5))
             if shot not in self.shots:
