@@ -12,13 +12,14 @@ class Game:
         print("Для начала необходимо выставить корабли.")
         # self.player.set_ships()
         self.enemy.set_ships()
+        self.enemy.field.draw_field()
         print("Перед Вами два поля. Слева Ваше. Справа противника.")
         print("Для выстрела, введите координаты стрельбы Y X через пробел")
 
     def __loop(self):
         game = True
         while game:
-            self.player.draw_both_field()
+            # self.player.draw_both_field()
             if self.player.shot(self.enemy.field):
                 print('Попадание!')
             else:

@@ -3,6 +3,7 @@ from player import Player
 from field import Field
 from my_errors import CollisionError
 
+
 class Enemy(Player):  # Пермутация от Player с перепесью функций
     def __init__(self):
         super().__init__()
@@ -11,25 +12,23 @@ class Enemy(Player):  # Пермутация от Player с перепесью �
     def set_ships(self):  # Выбор 1го из 4ех подготовленных полей
         while True:
             tries = 0
-            self.field = Field().field
+            self.field.field = [['О' for _ in range(6)] for _ in range(6)]
             for i, ship in enumerate(self.Ships):
-                while tries < 1000:
-                    print(tries)
+                while tries < 100:
+                    if ship.size > 1:
+                        ship.orientation = True if randint(0, 1) == 1 else False
                     try:
-                        pos = (randint(0, 5), randint(0,5))
-                        ship.position, ship.orientation = pos, True if randint(0, 1) == 1 else False
-                        # ship.position = pos
+                        ship.position = (randint(0, 5), randint(0, 5))
                     except CollisionError:
-                        print(i)
+                        tries += 1
                         continue
                     except IndexError:
-                        print(i)
+                        tries += 1
                         continue
                     else:
                         break
-
-
-
+            if self.field.field != [['О' for _ in range(6)] for _ in range(6)]:
+                break
 
     def shot(self, enemy_field: Field):  # Перепись функции выстрела.
         while True:
