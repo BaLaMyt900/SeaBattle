@@ -9,7 +9,7 @@ class Enemy(Player):  # Пермутация от Player с перепесью �
         self.shots = []
 
     def set_ships(self):  # Выбор 1го из 4ех подготовленных полей
-        choise = 2
+        choise = randint(0, 3)
         if choise == 0:
             self.Ships[0].orientation, self.Ships[0].position = True, (4, 0)
             self.Ships[1].orientation, self.Ships[1].position = False, (0, 4)
