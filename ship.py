@@ -3,8 +3,9 @@ from field import Field
 
 
 class Ship:
-    _position = [(0, 0)]
+    _position = []
     _orientation = False
+    _area = []
 
     def __init__(self, size: int, field: Field):
         self.size = size
@@ -22,11 +23,15 @@ class Ship:
             self._orientation = orientation
 
     @property
-    def position(self):   # Позиция. Кортеж с координатами на поле
+    def position(self):   # Позиция. Лист с координатами на поле
+        return self._position
+
+    @position.getter
+    def position(self):
         return self._position
 
     @position.setter
-    def position(self, pos: tuple):  # Установка позиции. Проверяет нахождение в поле, соседние клетки и устанавливает
+    def position(self, pos: tuple):  # Установка позиции. Проверяет нахождение в поле, соседние клетки
         def set(position):
             try:
                 self.field.set_ship(position)
@@ -49,6 +54,9 @@ class Ship:
                 set([(y, x-1), (y, x)])
         else:
             set([(y, x)])
+
+    def wipe_position(self):
+        self._position = []
 
     def check_down(self):  # Проверка попаданий. Возвращает True если во все точки попали
         for dot in self._position:

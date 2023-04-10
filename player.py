@@ -14,14 +14,22 @@ class Player:
 
     def set_ships(self):  # Установка кораблей с проверкой ввода и обработка ошибок
         for ship in self.Ships:
+            if ship.position:
+                break
             while True:
                 self.field.draw_field()
                 pos = input(f'Введите координаты для {f"{ship.size}х" if ship.size > 1 else f"{ship.size}но"}'
                             f' палубного корабля. Y X через пробел: ')
+                if pos == 'retry':
+                    self._wipe_field()
+                    break
                 try:
                     pos = (int(pos[0]), int(pos[2]))
                 except ValueError:
                     print('Неверный ввод. Повторите снова')
+                    continue
+                except IndexError:
+                    print('Введите значение')
                     continue
                 if not 0 <= pos[0] <= 5 or not 0 <= pos[1] <= 5:
                     print('Выход за координаты. Повторите попытку')
@@ -39,6 +47,12 @@ class Player:
                     print('Ошибка. Корабль установлен за пределами карты.')
                     continue
                 break
+
+    def _wipe_field(self):
+        self.field.field = [['О' for _ in range(6)] for _ in range(6)]
+        for ship in self.Ships:
+            ship.wipe_position()
+        self.set_ships()
 
     def draw_both_field(self):  # Отрисовка своего поля и поля для стрельбы через табуляцию
         print(f"  {' '.join(f'| {i} |' for i in range(6))}\t  {' '.join(f'| {i} |' for i in range(6))}")
