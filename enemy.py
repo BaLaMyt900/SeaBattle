@@ -4,16 +4,16 @@ from field import Field
 from my_errors import CollisionError
 
 
-class Enemy(Player):  # Пермутация от Player с перепесью функций
+class Enemy(Player):
     def __init__(self):
         super().__init__()
         self.shots = []
 
-    def set_ships(self):  # Выбор 1го из 4ех подготовленных полей
+    def set_ships(self):  # Генератор поля компьютера.
         while True:
             tries = 0
             self.field.field = [['О' for _ in range(6)] for _ in range(6)]
-            for i, ship in enumerate(self.Ships):
+            for ship in self.Ships:
                 while tries < 100:
                     if ship.size > 1:
                         ship.orientation = True if randint(0, 1) == 1 else False
